@@ -1,0 +1,29 @@
+{
+    "name"  : "Zer0-Framework/HTTP",
+    "type"  : "library",
+    "keywords": ["Zer0", "highload"],
+    "homepage": "https://github.com/Zer0-Framework/HTTP",
+    "license" : "GPL-3.0-or-later",
+    "description": "",
+    "authors" : [
+        {
+            "name"      : "Vasily Zorin",
+            "email"     : "kak.serpom.po.yaitsam@gmail.com",
+            "role"      : "Maintainer"
+        }
+    ],
+    "support" : {
+        "email" : "kak.serpom.po.yaitsam@gmail.com",
+        "issues": "https://github.com/Zer0-Framework/HTTP/issues"
+    },
+    "require": {
+        "php": ">=7.2",
+        "Zer0-Framework/Zer0": "*",
+        "Zer0-Framework/Config": "*"
+    },
+    "autoload": {
+        "classmap": ["src/"]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

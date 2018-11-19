@@ -115,23 +115,6 @@ abstract class AbstractController implements ControllerInterface
     }
 
     /**
-     * @param string $file Template to render
-     * @param array $scope = [] Variables
-     * @return string Output
-     * @throws TemplateNotFoundException
-     */
-    protected function fetchTemplate(string $file, array $scope = []): string
-    {
-        $this->tpl = $this->app->broker('Quicky')->get();
-        $this->beforeRenderTemplate();
-        $this->tpl->assign($scope);
-        if (!$this->tpl->template_exists($file)) {
-            throw new TemplateNotFoundException($file);
-        }
-        return $this->tpl->fetch($file);
-    }
-
-    /**
      * @param $response
      * @throws TemplateNotFoundException
      */

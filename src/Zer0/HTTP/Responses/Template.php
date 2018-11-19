@@ -86,8 +86,9 @@ class Template extends Base
      * Base constructor.
      * @param HTTP $http
      * @throws TemplateNotFoundException
+     * @return null|string
      */
-    public function render(HTTP $http)
+    public function render(HTTP $http, bool $fetch = false): ?string
     {
         $app = $http->app;
         $tpl = $app->broker('Quicky')->get();
@@ -112,6 +113,10 @@ class Template extends Base
         if (!$tpl->template_exists($this->file)) {
             throw new TemplateNotFoundException($this->file);
         }
+        if ($fetch) {
+            return $tpl->fetch($this->file);
+        }
         $tpl->display($this->file);
+        return null;
     }
 }

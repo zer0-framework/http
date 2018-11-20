@@ -10,7 +10,7 @@ use Zer0\HTTP\Router\NginxGenerator;
  * Class Build
  * @package Zer0\Cli\Controllers
  */
-final class Build extends AbstractController
+final class HTTP extends AbstractController
 {
     /**
      * @var \Zer0\Queue\Pools\Base
@@ -20,13 +20,13 @@ final class Build extends AbstractController
     /**
      * @var string
      */
-    protected $command = 'build';
+    protected $command = 'http';
 
     /**
      * @param mixed ...$args
      * @throws \Exception
      */
-    public function nginxAction(...$args): void
+    public function buildNginxAction(...$args): void
     {
         $indentStr = function ($str, $n) {
             return preg_replace('~^~m', str_repeat("\t", $n), $str);
@@ -54,7 +54,7 @@ final class Build extends AbstractController
         $this->cli->successLine("Written to $destfile in " . $this->elapsedMill() . " ms.");
     }
 
-    public function routesjsAction(): void
+    public function buildRoutesjsAction(): void
     {
         $destfile = ZERO_ROOT . '/public/js/Routes.cfg.js';
 
@@ -72,10 +72,10 @@ final class Build extends AbstractController
     /**
      *
      */
-    public function allAction()
+    public function buildAllAction()
     {
         foreach ($this->getActions() as $action) {
-            if ($action === 'all') {
+            if ($action === 'build-all' || substr($action, 0, 5) !== 'build') {
                 continue;
             }
             $this->cli->handleCommand('\\' . static::class, $action);

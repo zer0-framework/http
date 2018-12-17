@@ -26,10 +26,11 @@ class NginxGenerator extends Basic
     }
 
     /**
+     * @param string $inject = ''
      * @return string
      * @throws RouteNotFound
      */
-    public function generate(): string
+    public function generate(string $inject = ''): string
     {
         $cfg = '';
 
@@ -93,6 +94,9 @@ class NginxGenerator extends Basic
                 $cfg .= "\tfastcgi_param REQUEST_URI \$request_uri;\n";
                 $cfg .= "\tfastcgi_param ZERO_ROOT \$projectDir;\n";
                 $cfg .= "\tfastcgi_param ROUTE '" . addslashes($name) . "';\n";
+                if ($inject !== '') {
+                    $cfg .= "\t" . $inject . "\n";
+                }
             }
 
             $cfg .= "}\n\n";

@@ -102,12 +102,12 @@ abstract class AbstractController implements ControllerInterface
                         'Origin check failed'
                     );
                     throw new Forbidden('Bad origin.');
-                }
-                if (!$this->app->broker('CSRF_Token')->get()->validate()) {
-                    $this->app->log(
-                        'csrf token check failed'
-                    );
-                    throw new Forbidden('Bad CSRF token.');
+                    if (!$this->app->broker('CSRF_Token')->get()->validate()) {
+                        $this->app->log(
+                            'csrf token check failed'
+                        );
+                        throw new Forbidden('Bad CSRF token.');
+                    }
                 }
             }
         }

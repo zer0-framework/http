@@ -97,11 +97,17 @@ abstract class AbstractController implements ControllerInterface
             if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
                 $checkOrigin = $this->http->checkOrigin();
 
-                if (!$checkOrigin || !$this->app->broker('CSRF_Token')->get()->validate()) {
+                if (!$checkOrigin) {
                     $this->app->log(
-                        'csrf check failed'
+                        'Origin check failed'
                     );
                     throw new Forbidden('Bad origin.');
+                }
+                if (!$this->app->broker('CSRF_Token')->get()->validate()) {
+                    $this->app->log(
+                        'csrf token check failed'
+                    );
+                    throw new Forbidden('Bad CSRF token.');
                 }
             }
         }

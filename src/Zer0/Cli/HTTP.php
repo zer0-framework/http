@@ -34,16 +34,14 @@ final class HTTP extends AbstractController
 
         $config = $this->app->broker('HTTP')->getConfig();
 
-        $destfile = $config->nginx_folder . '/routes.conf';
-
         $routesGenerator = new NginxGenerator($config->Routes->toArray());
 
-        $destfile = $config->nginx_folder . '/server.conf';
+        $destfile = ZERO_ROOT . '/nginx/server.conf';
         ob_start();
         echo "#### The file has been generated automatically\n"
             . "#### Date: " . date('r') . "\n"
             . "#### DO NOT MODIFY THIS FILE MANUALLY, YOUR CHANGES WILL BE OVERWRITTEN!\n\n";
-        include $config->nginx_folder . '/server.conf.php';
+        include ZERO_ROOT . '/nginx/server.conf.php';
         $body = ob_get_contents();
         ob_end_clean();
 

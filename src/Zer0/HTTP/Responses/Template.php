@@ -116,7 +116,7 @@ class Template extends Base
         if ($fetch) {
             return $tpl->fetch($this->file);
         }
-        $tpl->display($this->file);
+        echo $tpl->fetch($this->file);
         return null;
     }
 }

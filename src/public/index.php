@@ -5,7 +5,6 @@ use Zer0\HTTP\Exceptions\HttpError;
 if (!defined('ZERO_ROOT')) {
     define('ZERO_ROOT', $_SERVER['ZERO_ROOT']);
 }
-ini_set('display_errors', 'On');
 require ZERO_ROOT . '/vendor/Zer0-Framework/Zer0/src/bootstrap.php';
 $app->broker('Autorun')->get();
 /**

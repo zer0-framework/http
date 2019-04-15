@@ -107,6 +107,11 @@ abstract class AbstractController implements ControllerInterface
                 }
             }
         }
+
+        if ($this->http->isPjaxRequest()) {
+            $query = http_build_query(array_diff_key(['_pjax' => true], $_GET));
+            $this->http->header('X-PJAX-URL: ' . $_SERVER['DOCUMENT_URI'] . ($query !== '' ? '?' . $query : ''));
+        }
     }
 
     /**

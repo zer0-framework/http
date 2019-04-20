@@ -1,8 +1,8 @@
 {
-    "name"  : "Zer0-Framework/HTTP",
+    "name"  : "zer0-framework/http",
     "type"  : "library",
     "keywords": ["Zer0", "highload"],
-    "homepage": "https://github.com/Zer0-Framework/HTTP",
+    "homepage": "https://github.com/zer0-framework/HTTP",
     "license" : "GPL-3.0-or-later",
     "description": "",
     "authors" : [
@@ -14,12 +14,12 @@
     ],
     "support" : {
         "email" : "kak.serpom.po.yaitsam@gmail.com",
-        "issues": "https://github.com/Zer0-Framework/HTTP/issues"
+        "issues": "https://github.com/zer0-framework/HTTP/issues"
     },
     "require": {
         "php": ">=7.2",
-        "Zer0-Framework/Zer0": "*",
-        "Zer0-Framework/Config": "*"
+        "zer0-framework/core": "*",
+        "zer0-framework/config": "*"
     },
     "autoload": {
         "classmap": ["src/"]

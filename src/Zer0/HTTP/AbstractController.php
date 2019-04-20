@@ -3,6 +3,7 @@
 namespace Zer0\HTTP;
 
 use Zer0\App;
+use Zer0\Config\Interfaces\ConfigInterface;
 use Zer0\Exceptions\TemplateNotFoundException;
 use Zer0\HTTP\Exceptions\Forbidden;
 use Zer0\HTTP\Exceptions\HttpError;
@@ -36,7 +37,7 @@ abstract class AbstractController implements ControllerInterface
     public $action;
 
     /**
-     * Config constructor.
+     * AbstractController constructor.
      * @param HTTP $http
      * @param App $app
      */
@@ -56,6 +57,16 @@ abstract class AbstractController implements ControllerInterface
      * @var bool
      */
     protected $skipOriginCheck = false;
+
+    /**
+     * @var ConfigInterface
+     */
+    protected $config;
+
+    /**
+     * @var string
+     */
+    protected $configName;
 
     /**
      * @param string $name
@@ -93,6 +104,10 @@ abstract class AbstractController implements ControllerInterface
      */
     public function before(): void
     {
+        if ($this->configName !== null) {
+            $this->config = $this->app->config->HTTP->Controllers->{$this->configName};
+        }
+
         if (!$this->skipOriginCheck) {
             if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
                 $checkOrigin = $this->http->checkOrigin();

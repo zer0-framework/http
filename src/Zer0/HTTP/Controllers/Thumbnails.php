@@ -53,7 +53,7 @@ class Thumbnails extends AbstractController
             /**
              * @var Base $storage
              */
-            $storage = $this->app->broker('FileStorage')->get();
+            $storage = $this->app->factory('FileStorage');
 
             $tmp = sys_get_temp_dir() . '/' . sha1(microtime() . '.' . $format . '_' . $path);
 

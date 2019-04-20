@@ -91,16 +91,16 @@ class Template extends Base
     public function render(HTTP $http, bool $fetch = false): ?string
     {
         $app = $http->app;
-        $tpl = $app->broker('Quicky')->get();
+        $tpl = $app->factory('Quicky');
 
         $tpl->assign($this->scope);
 
         $tpl->assign([
             'env' => $app->env,
             'isPjax' => $http->isPjaxRequest(),
-            'csrfToken' => $app->broker('CSRF_Token')->get()->get(),
+            'csrfToken' => $app->factory('CSRF_Token')->get(),
             'buildTimestamp' => $app->buildTimestamp,
-            'tracy' => $app->broker('Tracy')->get(),
+            'tracy' => $app->factory('Tracy'),
         ]);
 
 

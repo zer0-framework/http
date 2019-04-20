@@ -6,11 +6,11 @@ if (!defined('ZERO_ROOT')) {
     define('ZERO_ROOT', $_SERVER['ZERO_ROOT']);
 }
 require ZERO_ROOT . '/vendor/zer0-framework/core/src/bootstrap.php';
-$app->broker('Autorun')->get();
+$app->factory('Autorun');
 /**
  * @var \Zer0\HTTP\HTTP $http
  */
-$http = $app->broker('HTTP')->get();
+$http = $app->factory('HTTP');
 
 try {
     $http->prepareEnv();

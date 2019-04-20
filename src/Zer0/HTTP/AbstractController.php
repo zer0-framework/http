@@ -113,7 +113,7 @@ abstract class AbstractController implements ControllerInterface
                 $checkOrigin = $this->http->checkOrigin();
 
                 if (!$checkOrigin) {
-                    if (!$this->app->broker('CSRF_Token')->get()->validate()) {
+                    if (!$this->app->factory('CSRF_Token')->validate()) {
                         $this->app->log(
                             'Csrf token check failed'
                         );

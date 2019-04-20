@@ -2,7 +2,7 @@
     "name"  : "zer0-framework/http",
     "type"  : "library",
     "keywords": ["Zer0", "highload"],
-    "homepage": "https://github.com/zer0-framework/HTTP",
+    "homepage": "https://github.com/zer0-framework/http",
     "license" : "GPL-3.0-or-later",
     "description": "",
     "authors" : [
@@ -14,7 +14,7 @@
     ],
     "support" : {
         "email" : "kak.serpom.po.yaitsam@gmail.com",
-        "issues": "https://github.com/zer0-framework/HTTP/issues"
+        "issues": "https://github.com/zer0-framework/http/issues"
     },
     "require": {
         "php": ">=7.2",

@@ -131,7 +131,18 @@ trait Helpers
      * @return string
      * @throws RouteNotFound
      */
-    public function buildUrl(string $routeName, $params = [], array $query = []): string
+    public function buildUrl(string $routeName, $params = [], array $query = []): string {
+        return $this->url(...func_get_args());
+    }
+
+    /**
+     * @param string $routeName
+     * @param mixed $params
+     * @param array $query
+     * @return string
+     * @throws RouteNotFound
+     */
+    public function url(string $routeName, $params = [], array $query = []): string
     {
         if (is_string($params)) {
             $params = [
@@ -142,20 +153,16 @@ trait Helpers
         if (!$route) {
             throw new RouteNotFound("Route {$routeName} not found.");
         }
-        $tr = [];
-        foreach ($route['defaults'] as $key => $value) {
-            $tr['{' . $key . '}'] = $value;
-        }
-        foreach ($params as $key => $value) {
-            $tr['{' . $key . '}'] = $value;
-        }
-        if (!isset($tr['{action}'])) {
-            $tr['{action}'] = '';
-        }
-        $url = strtr($route['path_export'] ?? $route['path'], $tr);
+
+        $url = preg_replace_callback('~{(.*?)}~', function(array $match) use ($route, $params): string {
+            $parameter = $match[1];
+            return $params[$parameter] ?? $route['defaults'][$parameter] ?? '';
+        }, $route['path_export'] ?? $route['path']);
+
         if ($url !== '/') {
             $url = rtrim($url, '/');
         }
+
         if ($query) {
             $url .= '?' . http_build_query($query);
         }

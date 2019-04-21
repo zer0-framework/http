@@ -154,7 +154,7 @@ trait Helpers
             throw new RouteNotFound("Route {$routeName} not found.");
         }
 
-        $url = preg_replace_callback('~{(.*?)}~', function(array $match) use ($route, $params): string {
+        $url = preg_replace_callback('~\{(.*?)\}~', function(array $match) use ($route, $params): string {
             $parameter = $match[1];
             return $params[$parameter] ?? $route['defaults'][$parameter] ?? '';
         }, $route['path_export'] ?? $route['path']);

@@ -20,6 +20,9 @@ class JSGenerator extends Basic
             if (!in_array('JS', $route['export'] ?? [], true)) {
                 continue;
             }
+            if (($route['defaults']['action'] ?? '') === 'index') {
+                unset($route['defaults']['action']);
+            }
             $routes[$routeName] = [
                 'path' => $route['path_export'] ?? $route['path'],
                 'defaults' => $route['defaults'] ?? [],

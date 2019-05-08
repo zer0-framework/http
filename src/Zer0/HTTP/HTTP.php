@@ -69,7 +69,7 @@ class HTTP
             $_SERVER['ROUTE_ACTION'] = str_replace(' ', '', ucwords(str_replace('-', ' ', $_SERVER['ROUTE_ACTION'])));
         }
         if (isset($_SERVER['HTTP_CONTENT_TYPE'])) {
-            $contentType = strstr($_SERVER['HTTP_CONTENT_TYPE'], ';', true);
+            $contentType = strstr($_SERVER['HTTP_CONTENT_TYPE'] . ';', ';', true);
             if ($contentType === 'application/json') {
                 try {
                     $_POST = json_decode(file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);

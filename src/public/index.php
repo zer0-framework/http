@@ -1,7 +1,7 @@
 <?php
 
 use Zer0\HTTP\Exceptions\HttpError;
-
+ini_set('display_errors', 'On');
 if (!defined('ZERO_ROOT')) {
     define('ZERO_ROOT', $_SERVER['ZERO_ROOT']);
 }

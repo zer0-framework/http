@@ -48,6 +48,25 @@ class HTTP
     }
 
     /**
+     * @return array
+     */
+    public function getAcceptedLanguages(): array
+    {
+        if (!preg_match_all(
+            '~([a-z]{1,8}(?:-[a-z]{1,8})?)(?:;q=([0-9.]+))?~',
+            strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? ''), $matches)) {
+
+            return [];
+        }
+        $ret = array_combine($matches[1], $matches[2]);
+        foreach ($ret as &$v) {
+            $v = $v ?: 1;
+        }
+        arsort($ret, SORT_NUMERIC);
+        return $ret;
+    }
+
+    /**
      * @return void
      */
     public function prepareEnv(): void

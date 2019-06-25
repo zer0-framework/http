@@ -34,8 +34,9 @@ class NginxGenerator extends Basic
     {
         $cfg = '';
 
+        $stringMap = array_flip($this->stringMap);
+        
         foreach ($this->routes as $name => $conf) {
-            $stringMap = array_flip($this->stringMap);
             $conf['type'] = $conf['type'] ?? 'plain';
             if ($conf['type'] === 'websocket') {
                 $location = $conf['path'];

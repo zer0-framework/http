@@ -42,15 +42,15 @@ trait Helpers
     }
 
     /**
-     * @param $hdr
-     * @return void
+     * @param string $hdr
+     * @param bool $replace
      */
-    public function header(string $hdr): void
+    public function header(string $hdr, bool $replace = true): void
     {
         if (PHP_SAPI !== 'cli') {
-            header($hdr);
+            header($hdr, $replace);
         } elseif (Daemon::$req !== null) {
-            Daemon::$req->header($hdr);
+            Daemon::$req->header($hdr, $replace);
         }
     }
 

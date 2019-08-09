@@ -82,6 +82,21 @@ class Template extends Base
         $this->callback = $callback;
     }
 
+
+    /**
+     * @var string
+     */
+    public function getFile(): string {
+        return $this->file;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setFile(string $path): void {
+        $this->file = $path;
+    }
+
     /**
      * Base constructor.
      * @param HTTP $http
@@ -105,7 +120,7 @@ class Template extends Base
 
 
         if ($this->callback !== null) {
-            call_user_func($this->callback, $tpl);
+            call_user_func($this->callback, $tpl, $this);
         }
 
         $tpl->register_function('url', [$http, 'buildUrl']);

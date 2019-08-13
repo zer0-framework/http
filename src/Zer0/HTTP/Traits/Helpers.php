@@ -72,7 +72,8 @@ trait Helpers
         $domain = "",
         $secure = false,
         $httponly = false
-    ): bool {
+    ): bool
+    {
         if ($secure === null) {
             $secure = ($_SERVER['REQUEST_SCHEME'] ?? null) === 'https';
         }
@@ -131,7 +132,8 @@ trait Helpers
      * @return string
      * @throws RouteNotFound
      */
-    public function buildUrl(string $routeName, $params = [], array $query = []): string {
+    public function buildUrl(string $routeName, $params = [], array $query = []): string
+    {
         return $this->url(...func_get_args());
     }
 
@@ -151,10 +153,10 @@ trait Helpers
         }
         $route = $this->config->Routes->{$routeName} ?? null;
         if (!$route) {
-            throw new RouteNotFound("Route {$routeName} not found.");
+            throw new RouteNotFound('Route ' . json_encode($routeName) . ' not found.');
         }
 
-        $url = preg_replace_callback('~\{(.*?)\}~', function(array $match) use ($route, $params): string {
+        $url = preg_replace_callback('~\{(.*?)\}~', function (array $match) use ($route, $params): string {
             $parameter = $match[1];
             return $params[$parameter] ?? $route['defaults'][$parameter] ?? '';
         }, $route['path_export'] ?? $route['path']);

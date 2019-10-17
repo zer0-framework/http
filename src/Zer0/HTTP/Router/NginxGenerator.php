@@ -88,7 +88,6 @@ class NginxGenerator extends Basic
                     }
                 }
 
-                $cfg .= "\tfastcgi_pass fastcgi;\n";
                 $cfg .= "\tinclude fastcgi_params;\n";
                 $cfg .= "\tfastcgi_param SCRIPT_FILENAME \$projectDir/vendor/zer0-framework/http/src/public/index.php;\n";
                 $cfg .= "\tfastcgi_param APPNAME \"\Zer0\\FastCGI\\Application\";\n";
@@ -97,6 +96,8 @@ class NginxGenerator extends Basic
                 $cfg .= "\tfastcgi_param ROUTE '" . addslashes($name) . "';\n";
                 if ($inject !== '') {
                     $cfg .= "\t" . $inject . "\n";
+                } else {
+                    $cfg .= "\tfastcgi_pass fastcgi;\n";
                 }
             }
 

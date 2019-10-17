@@ -28,8 +28,16 @@ final class HTTP extends AbstractController
      */
     public function buildNginxAction(...$args): void
     {
-        $indentStr = function ($str, $n) {
+        $indentStr = function (string $str, int $n = 0): string {
             return preg_replace('~^~m', str_repeat("\t", $n), $str);
+        };
+
+        $escapeServerName = function (string $str): string {
+            return strtr($str, [
+                '"' => '\\"',
+                '{' => '\\{',
+                '}' => '\\}',
+            ]);
         };
 
         $config = $this->app->broker('HTTP')->getConfig();

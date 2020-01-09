@@ -43,6 +43,7 @@ trait Handlers
     public function handleRequest(string $controllerClass, string $action, array $args = []): void
     {
         try {
+            ob_start();
             if ($controllerClass === '') {
                 throw new NotFound('$controllerClass cannot be empty');
             }
@@ -83,6 +84,8 @@ trait Handlers
             $this->handleRedirect($redirect);
         } catch (\Throwable $exception) {
             $this->handleException($exception);
+        } finally {
+            ob_end_flush();
         }
     }
 

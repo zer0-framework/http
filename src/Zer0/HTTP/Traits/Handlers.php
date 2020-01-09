@@ -85,7 +85,9 @@ trait Handlers
         } catch (\Throwable $exception) {
             $this->handleException($exception);
         } finally {
-            ob_end_flush();
+            if (ob_get_level()) {
+                ob_end_flush();
+            }
         }
     }
 

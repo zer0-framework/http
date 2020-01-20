@@ -55,6 +55,16 @@ trait Helpers
     }
 
     /**
+     * @param string $hdr
+     */
+    public function headerRemove(string $hdr): void
+    {
+        if (PHP_SAPI !== 'cli') {
+            header_remove($hdr);
+        }
+    }
+
+    /**
      * @param $name
      * @param string $value
      * @param int $expire

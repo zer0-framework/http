@@ -86,22 +86,24 @@ class Template extends Base
     /**
      * @var string
      */
-    public function getFile(): string {
+    public function getFile(): string
+    {
         return $this->file;
     }
 
     /**
      * @param string $path
      */
-    public function setFile(string $path): void {
+    public function setFile(string $path): void
+    {
         $this->file = $path;
     }
 
     /**
      * Base constructor.
      * @param HTTP $http
-     * @throws TemplateNotFoundException
      * @return null|string
+     * @throws TemplateNotFoundException
      */
     public function render(HTTP $http, bool $fetch = false): ?string
     {
@@ -124,6 +126,23 @@ class Template extends Base
         }
 
         $tpl->register_function('url', [$http, 'buildUrl']);
+        $tpl->register_function('embed', function (array $params) use ($http) {
+            try {
+                $controller = $http->getController($params['controller'], $action = $params['action'] ?? 'index');
+
+                $controller->before();
+                $method = strtolower($action) . 'Action';
+                $ret = $controller->$method(...($params['args'] ?? []));
+                if ($ret !== null) {
+                    $controller->renderResponse($ret);
+                }
+                $controller->after();
+            } catch (\Throwable $e) {
+                if (!($params['silent'] ?? false)) {
+                    throw new \RuntimeException('Error occured in an embed call.', 0, $e);
+                }
+            }
+        });
 
         if (!$tpl->template_exists($this->file)) {
             throw new TemplateNotFoundException($this->file);

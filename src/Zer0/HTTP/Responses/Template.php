@@ -126,29 +126,7 @@ class Template extends Base
         }
 
         $tpl->register_function('url', [$http, 'buildUrl']);
-        $tpl->register_function('embed', function (array $params) use ($http) {
-            try {
-                $controller = $http->getController($params['controller'], $action = $params['action'] ?? 'index');
-
-                foreach ($params as $key => $value) {
-                    if (strpos($key, 'prop-') === 0) {
-                        $controller->{substr($key, 5)} = $value;
-                    }
-                }
-
-                $controller->before();
-                $method = strtolower($action) . 'Action';
-                $ret = $controller->$method(...($params['args'] ?? []));
-                if ($ret !== null) {
-                    $controller->renderResponse($ret);
-                }
-                $controller->after();
-            } catch (\Throwable $e) {
-                if (!($params['silent'] ?? false)) {
-                    throw new \RuntimeException('Error occured in an embed call.', 0, $e);
-                }
-            }
-        });
+        $tpl->register_function('embed', [$http, 'embed']);
 
         if (!$tpl->template_exists($this->file)) {
             throw new TemplateNotFoundException($this->file);

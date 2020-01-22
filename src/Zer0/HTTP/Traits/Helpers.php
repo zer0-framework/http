@@ -189,4 +189,33 @@ trait Helpers
     {
         fastcgi_finish_request();
     }
+
+    /**
+     * @param array $params
+     * @return string|null
+     */
+    public function embed(array $params): ?string
+    {
+        try {
+            $controller = $this->getController($params['controller'], $params['action'] ?? '');
+
+            foreach ($params as $key => $value) {
+                if (strpos($key, 'prop-') === 0) {
+                    $controller->{substr($key, 5)} = $value;
+                }
+            }
+            $controller->before();
+            $method = $controller->action;
+            $ret = $controller->$method(...($params['args'] ?? []));
+            if ($ret !== null) {
+                return $controller->renderResponse($ret, $params['fetch'] ?? false);
+            }
+        } catch (\Throwable $e) {
+            if (!($params['silent'] ?? false)) {
+                throw new \RuntimeException('Error occured in an embed call.', 0, $e);
+            }
+        } finally {
+            $controller->after();
+        }
+    }
 }

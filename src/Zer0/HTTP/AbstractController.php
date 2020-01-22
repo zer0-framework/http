@@ -138,15 +138,17 @@ abstract class AbstractController implements ControllerInterface
 
     /**
      * @param $response
+     * @param bool $fetch
+     * @return string|null
      * @throws TemplateNotFoundException
      */
-    public function renderResponse($response): void
+    public function renderResponse($response, bool $fetch = false): ?string
     {
         if (!$response instanceof Base) {
             $response = new JSON($response);
         } elseif ($response instanceof Template) {
             $response->setController($this);
         }
-        $response->render($this->http);
+        return $response->render($this->http, $fetch);
     }
 }

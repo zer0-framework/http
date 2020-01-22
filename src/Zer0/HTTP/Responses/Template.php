@@ -130,6 +130,12 @@ class Template extends Base
             try {
                 $controller = $http->getController($params['controller'], $action = $params['action'] ?? 'index');
 
+                foreach ($params as $key => $value) {
+                    if (strpos($key, 'prop-') === 0) {
+                        $controller->{substr($key, 5)} = $value;
+                    }
+                }
+
                 $controller->before();
                 $method = strtolower($action) . 'Action';
                 $ret = $controller->$method(...($params['args'] ?? []));
@@ -150,7 +156,7 @@ class Template extends Base
         if ($fetch) {
             return $tpl->fetch($this->file);
         }
-        echo $tpl->fetch($this->file);
+        $tpl->display($this->file);
         return null;
     }
 }

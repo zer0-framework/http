@@ -25,11 +25,15 @@ class Plain extends Base
     }
 
     /**
-     * Base constructor.
      * @param HTTP $http
+     * @param bool $fetch
+     * @return mixed|void
      */
-    public function render(HTTP $http)
+    public function render(HTTP $http, bool $fetch = false)
     {
+        if ($fetch) {
+            return $this->body;
+        }
         $http->header('Content-Type: text/plain');
         echo $this->body;
     }

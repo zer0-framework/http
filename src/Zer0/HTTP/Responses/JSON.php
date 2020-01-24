@@ -13,7 +13,7 @@ class JSON extends Base
     /**
      * @var mixed
      */
-    protected $scope;
+    public $scope;
 
     /**
      * JSON constructor.

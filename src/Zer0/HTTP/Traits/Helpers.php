@@ -208,8 +208,12 @@ trait Helpers
             $method = $controller->action;
             $ret = $controller->$method(...($params['args'] ?? []));
             if ($ret !== null) {
-                return $controller->renderResponse($ret, $params['fetch'] ?? false);
+                if ($params['fetch'] ?? false) {
+                    return $controller->renderResponse($ret, true);
+                }
+                echo $controller->renderResponse($ret, true);
             }
+            return null;
         } catch (\Throwable $e) {
             if (!($params['silent'] ?? false)) {
                 throw new \RuntimeException('Error occured in an embed call.', 0, $e);

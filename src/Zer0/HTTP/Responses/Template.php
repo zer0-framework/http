@@ -86,22 +86,24 @@ class Template extends Base
     /**
      * @var string
      */
-    public function getFile(): string {
+    public function getFile(): string
+    {
         return $this->file;
     }
 
     /**
      * @param string $path
      */
-    public function setFile(string $path): void {
+    public function setFile(string $path): void
+    {
         $this->file = $path;
     }
 
     /**
      * Base constructor.
      * @param HTTP $http
-     * @throws TemplateNotFoundException
      * @return null|string
+     * @throws TemplateNotFoundException
      */
     public function render(HTTP $http, bool $fetch = false): ?string
     {
@@ -124,6 +126,7 @@ class Template extends Base
         }
 
         $tpl->register_function('url', [$http, 'buildUrl']);
+        $tpl->register_function('embed', [$http, 'embed']);
 
         if (!$tpl->template_exists($this->file)) {
             throw new TemplateNotFoundException($this->file);
@@ -131,7 +134,7 @@ class Template extends Base
         if ($fetch) {
             return $tpl->fetch($this->file);
         }
-        echo $tpl->fetch($this->file);
+        $tpl->display($this->file);
         return null;
     }
 }

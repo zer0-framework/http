@@ -55,6 +55,16 @@ trait Helpers
     }
 
     /**
+     * @param string $hdr
+     */
+    public function headerRemove(string $hdr): void
+    {
+        if (PHP_SAPI !== 'cli') {
+            header_remove($hdr);
+        }
+    }
+
+    /**
      * @param $name
      * @param string $value
      * @param int $expire
@@ -178,5 +188,34 @@ trait Helpers
     public function finishRequest()
     {
         fastcgi_finish_request();
+    }
+
+    /**
+     * @param array $params
+     * @return string|null
+     */
+    public function embed(array $params): ?string
+    {
+        try {
+            $controller = $this->getController($params['controller'], $params['action'] ?? '');
+
+            foreach ($params as $key => $value) {
+                if (strpos($key, 'prop-') === 0) {
+                    $controller->{substr($key, 5)} = $value;
+                }
+            }
+            $controller->before();
+            $method = $controller->action;
+            $ret = $controller->$method(...($params['args'] ?? []));
+            if ($ret !== null) {
+                return $controller->renderResponse($ret, $params['fetch'] ?? false);
+            }
+        } catch (\Throwable $e) {
+            if (!($params['silent'] ?? false)) {
+                throw new \RuntimeException('Error occured in an embed call.', 0, $e);
+            }
+        } finally {
+            $controller->after();
+        }
     }
 }

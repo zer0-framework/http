@@ -28,13 +28,17 @@ class JSON extends Base
      * Base constructor.
      * @param HTTP $http
      */
-    public function render(HTTP $http)
+    public function render(HTTP $http, bool $fetch = false)
     {
         $http->header('Content-Type: application/json');
         $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
         if ($http->config->pretty_json) {
             $flags |= JSON_PRETTY_PRINT;
         }
-        echo json_encode($this->scope, $flags);
+        $ret = json_encode($this->scope, $flags);
+        if ($fetch) {
+            return $ret;
+        }
+        echo $ret;
     }
 }

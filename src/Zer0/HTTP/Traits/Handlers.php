@@ -2,6 +2,7 @@
 
 namespace Zer0\HTTP\Traits;
 
+use Zer0\HTTP\AbstractController;
 use Zer0\HTTP\Exceptions\HttpError;
 use Zer0\HTTP\Exceptions\InternalRedirect;
 use Zer0\HTTP\Exceptions\InternalServerError;
@@ -44,33 +45,9 @@ trait Handlers
     {
         try {
             ob_start();
-            if ($controllerClass === '') {
-                throw new NotFound('$controllerClass cannot be empty');
-            }
-            if ($action === '') {
-                $action = 'index';
-            }
-
-            $method = strtolower($action) . 'Action';
-
-            if (substr($controllerClass, 0, 1) !== '\\') {
-                $controllerClass = $this->config->default_controller_ns . '\\' . $controllerClass;
-            }
-
-            if (!class_exists($controllerClass) || !class_implements($controllerClass, ControllerInterface::class)) {
-                throw new NotFound('Controller ' . $controllerClass . ' not found.');
-            }
-
-            /** @var \Zer0\HTTP\AbstractController $controller */
-            $controller = new $controllerClass($this, $this->app);
-
-            if (!method_exists($controller, $method)) {
-                throw new NotFound('Action ' . $action . ' not found in controller '
-                    . get_class($controller));
-            }
-
-            $controller->action = $method;
+            $controller = $this->getController($controllerClass, $action);
             $controller->before();
+            $method = $controller->action;
             $ret = $controller->$method(...$args);
             if ($ret !== null) {
                 $controller->renderResponse($ret);
@@ -92,9 +69,44 @@ trait Handlers
     }
 
     /**
+     * @param string $controllerClass
+     * @param string $action
+     */
+    public function getController(string $controllerClass, string $action): AbstractController
+    {
+        if ($controllerClass === '') {
+            throw new NotFound('$controllerClass cannot be empty');
+        }
+        if ($action === '') {
+            $action = 'index';
+        }
+
+        $method = strtolower($action) . 'Action';
+
+        if (substr($controllerClass, 0, 1) !== '\\') {
+            $controllerClass = $this->config->default_controller_ns . '\\' . $controllerClass;
+        }
+
+        if (!class_exists($controllerClass) || !class_implements($controllerClass, ControllerInterface::class)) {
+            throw new NotFound('Controller ' . $controllerClass . ' not found.');
+        }
+
+        /** @var \Zer0\HTTP\AbstractController $controller */
+        $controller = new $controllerClass($this, $this->app);
+
+        if (!method_exists($controller, $method)) {
+            throw new NotFound('Action ' . $action . ' not found in controller '
+                . get_class($controller));
+        }
+
+        $controller->action = $method;
+        return $controller;
+    }
+
+    /**
      * @param HttpError $error
-     * @throws \Exception
      * @return void
+     * @throws \Exception
      */
     public function handleHttpError(HttpError $error): void
     {
@@ -128,8 +140,8 @@ trait Handlers
 
     /**
      * @param Redirect $redirect
-     * @throws \Exception
      * @return void
+     * @throws \Exception
      */
     public function handleRedirect(Redirect $redirect): void
     {

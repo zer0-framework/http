@@ -3,6 +3,7 @@
 namespace Zer0\HTTP\Traits;
 
 use Zer0\HTTP\AbstractController;
+use Zer0\HTTP\Exceptions\FinishRequest;
 use Zer0\HTTP\Exceptions\HttpError;
 use Zer0\HTTP\Exceptions\InternalRedirect;
 use Zer0\HTTP\Exceptions\InternalServerError;
@@ -12,6 +13,7 @@ use Zer0\HTTP\Intefarces\ControllerInterface;
 
 /**
  * Trait Handlers
+ *
  * @package Zer0\HTTP\Traits
  */
 trait Handlers
@@ -29,7 +31,7 @@ trait Handlers
     /**
      * @param callable $handler
      */
-    public function setExceptionHandler(callable $handler): void
+    public function setExceptionHandler (callable $handler): void
     {
         $this->exceptionHandler = $handler;
     }
@@ -37,24 +39,26 @@ trait Handlers
     /**
      * @param string $controllerClass
      * @param string $action
-     * @param array $args
+     * @param array  $args
+     *
      * @return void
      * @throws \Exception
      */
-    public function handleRequest(string $controllerClass, string $action, array $args = []): void
+    public function handleRequest (string $controllerClass, string $action, array $args = []): void
     {
         try {
             ob_start();
             $controller = $this->getController($controllerClass, $action);
             $controller->before();
             $method = $controller->action;
-            $ret = $controller->$method(...$args);
+            $ret    = $controller->$method(...$args);
             if ($ret !== null) {
                 $controller->renderResponse($ret);
             }
             $controller->after();
         } catch (HttpError $error) {
             $this->handleHttpError($error);
+        } catch (FinishRequest $e) {
         } catch (InternalRedirect $redirect) {
             $this->handleRequest($redirect->controller, $redirect->action);
         } catch (Redirect $redirect) {
@@ -72,7 +76,7 @@ trait Handlers
      * @param string $controllerClass
      * @param string $action
      */
-    public function getController(string $controllerClass, string $action): AbstractController
+    public function getController (string $controllerClass, string $action): AbstractController
     {
         if ($controllerClass === '') {
             throw new NotFound('$controllerClass cannot be empty');
@@ -95,20 +99,24 @@ trait Handlers
         $controller = new $controllerClass($this, $this->app);
 
         if (!method_exists($controller, $method)) {
-            throw new NotFound('Action ' . $action . ' not found in controller '
-                . get_class($controller));
+            throw new NotFound(
+                'Action ' . $action . ' not found in controller '
+                . get_class($controller)
+            );
         }
 
         $controller->action = $method;
+
         return $controller;
     }
 
     /**
      * @param HttpError $error
+     *
      * @return void
      * @throws \Exception
      */
-    public function handleHttpError(HttpError $error): void
+    public function handleHttpError (HttpError $error): void
     {
         $route = $this->config->route_errors[$error->httpCode] ?? $this->config->route_errors['any'] ?? null;
         if ($route !== null) {
@@ -116,17 +124,17 @@ trait Handlers
         }
     }
 
-
     /**
      * @param \Throwable $exception
+     *
      * @return void
      * @throws \Exception
      */
-    public function handleException(\Throwable $exception): void
+    public function handleException (\Throwable $exception): void
     {
         if (!$this->handlingException) {
             $this->handlingException = true;
-            $stop = false;
+            $stop                    = false;
             if ($this->exceptionHandler !== null) {
                 $stop = call_user_func($this->exceptionHandler, $exception);
             }
@@ -137,13 +145,13 @@ trait Handlers
         }
     }
 
-
     /**
      * @param Redirect $redirect
+     *
      * @return void
      * @throws \Exception
      */
-    public function handleRedirect(Redirect $redirect): void
+    public function handleRedirect (Redirect $redirect): void
     {
         $this->responseCode($redirect->httpCode);
         $this->header('Location: ' . $redirect->getUrl());
@@ -152,7 +160,7 @@ trait Handlers
     /**
      *
      */
-    public function handleRequestEnd()
+    public function handleRequestEnd ()
     {
         $this->trigger('endRequest');
         $this->cleanupEventHandlers();

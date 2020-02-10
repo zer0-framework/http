@@ -98,10 +98,10 @@ trait Helpers
 
     /**
      * @param callable $cb
-     * @param $realm
+     * @param string $realm
      * @throws Unauthorized
      */
-    public function basicAuth(callable $cb, $realm): void
+    public function basicAuth(callable $cb, string $realm): void
     {
         if (!$cb($_SERVER['PHP_AUTH_USER'] ?? '', $_SERVER['PHP_AUTH_PW'] ?? '')) {
             $this->header('WWW-Authenticate: Basic realm="' . $realm . '", charset="UTF-8"');
@@ -134,7 +134,7 @@ trait Helpers
 
         return true;
     }
-
+    
     /**
      * @param string $routeName
      * @param mixed $params

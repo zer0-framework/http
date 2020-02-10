@@ -137,6 +137,12 @@ abstract class AbstractController implements ControllerInterface
     }
 
     /**
+     *
+     */
+    public function onException(\Throwable $exception) {
+    }
+    
+    /**
      * @param $response
      * @param bool $fetch
      * @return string|null

@@ -65,7 +65,13 @@ trait Handlers
         } catch (Redirect $redirect) {
             $this->handleRedirect($redirect);
         } catch (\Throwable $exception) {
-            $this->handleException($exception);
+            $ret = $controller->onException($exception);
+            if ($ret !== null) {
+                $controller->renderResponse($ret);
+                $controller->after();
+            } else {
+                $this->handleException($exception);
+            }
         } finally {
             if (ob_get_level()) {
                 ob_end_flush();

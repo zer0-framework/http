@@ -109,7 +109,7 @@ abstract class AbstractController implements ControllerInterface
         }
 
         if (!$this->skipOriginCheck) {
-            if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'OPTIONS'], true) || isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
                 $checkOrigin = $this->http->checkOrigin();
 
                 if (!$checkOrigin) {

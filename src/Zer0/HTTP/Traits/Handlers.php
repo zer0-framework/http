@@ -3,6 +3,7 @@
 namespace Zer0\HTTP\Traits;
 
 use Zer0\HTTP\AbstractController;
+use Zer0\HTTP\Exceptions\EndRequest;
 use Zer0\HTTP\Exceptions\FinishRequest;
 use Zer0\HTTP\Exceptions\HttpError;
 use Zer0\HTTP\Exceptions\InternalRedirect;
@@ -58,7 +59,7 @@ trait Handlers
             $controller->after();
         } catch (HttpError $error) {
             $this->handleHttpError($error);
-        } catch (FinishRequest $e) {
+        } catch (EndRequest $e) {
         } catch (InternalRedirect $redirect) {
             $this->handleRequest($redirect->controller, $redirect->action);
         } catch (Redirect $redirect) {

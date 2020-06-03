@@ -90,6 +90,8 @@ trait Handlers
         }
         if ($action === '') {
             $action = 'index';
+        } elseif (strpos($action, '-') !== false) { // snake-case
+            $action = str_replace(' ', '', ucwords(str_replace('-', ' ', $_SERVER['ROUTE_ACTION'] ?? '')));
         }
 
         $method = strtolower($action) . 'Action';

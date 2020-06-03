@@ -152,7 +152,7 @@ abstract class AbstractController implements ControllerInterface
     {
         if (!$response instanceof Base) {
             $response = new JSON($response);
-        } elseif ($response instanceof Template) {
+        } else {
             $response->setController($this);
         }
         return $response->render($this->http, $fetch);

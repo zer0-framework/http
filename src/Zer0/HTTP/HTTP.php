@@ -84,9 +84,6 @@ class HTTP
             }
             unset($_SERVER[$key]);
         }
-        if (isset($_SERVER['ROUTE_ACTION'])) {
-            $_SERVER['ROUTE_ACTION'] = str_replace(' ', '', ucwords(str_replace('-', ' ', $_SERVER['ROUTE_ACTION'])));
-        }
         if (isset($_SERVER['HTTP_CONTENT_TYPE'])) {
             $contentType = strstr($_SERVER['HTTP_CONTENT_TYPE'] . ';', ';', true);
             if ($contentType === 'application/json') {

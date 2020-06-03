@@ -100,9 +100,11 @@ class Template extends Base
     }
 
     /**
-     * Base constructor.
+     * Render the template
      * @param HTTP $http
-     * @return null|string
+     * @param bool $fetch
+     *
+     * @return string|null
      * @throws TemplateNotFoundException
      */
     public function render(HTTP $http, bool $fetch = false): ?string

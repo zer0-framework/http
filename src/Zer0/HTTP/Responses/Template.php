@@ -24,11 +24,6 @@ class Template extends Base
     protected $file;
 
     /**
-     * @var \Zer0\HTTP\Intefarces\ControllerInterface
-     */
-    protected $controller;
-
-    /**
      * @var \Quicky
      */
     protected $tpl;
@@ -61,16 +56,6 @@ class Template extends Base
         } else {
             $this->scope[$key] = $value;
         }
-        return $this;
-    }
-
-    /**
-     * @param ControllerInterface $controller
-     * @return $this
-     */
-    public function setController(ControllerInterface $controller)
-    {
-        $this->controller = $controller;
         return $this;
     }
 

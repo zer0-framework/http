@@ -3,6 +3,7 @@
 namespace Zer0\HTTP\Responses;
 
 use Zer0\HTTP\HTTP;
+use Zer0\HTTP\Intefarces\ControllerInterface;
 
 /**
  * Class Base
@@ -10,6 +11,12 @@ use Zer0\HTTP\HTTP;
  */
 abstract class Base
 {
+
+    /**
+     * @var \Zer0\HTTP\Intefarces\ControllerInterface
+     */
+    protected $controller;
+    
     /**
      * @var mixed
      */
@@ -20,7 +27,7 @@ abstract class Base
      * @return mixed
      */
     abstract public function render(HTTP $http);
-
+    
     /**
      * @param $scope
      */
@@ -35,5 +42,15 @@ abstract class Base
     public function getScope()
     {
         return $this->scope;
+    }
+
+    /**
+     * @param ControllerInterface $controller
+     * @return $this
+     */
+    public function setController(ControllerInterface $controller)
+    {
+        $this->controller = $controller;
+        return $this;
     }
 }

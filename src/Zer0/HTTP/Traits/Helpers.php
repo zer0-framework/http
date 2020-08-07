@@ -108,32 +108,6 @@ trait Helpers
             throw new Unauthorized("Restricted access to {$realm}");
         }
     }
-
-
-    /**
-     *
-     *
-     * @return bool
-     */
-    public function checkOrigin(): bool
-    {
-        $origin = $_SERVER['HTTP_ORIGIN'] ?? $_SERVER['HTTP_REFERER'] ?? null;
-        if (!isset($origin) || parse_url($origin, PHP_URL_HOST) !== $_SERVER['HTTP_HOST']) {
-            $params = [
-                'HTTP_ORIGIN' => isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : null,
-                'HTTP_REFERER' => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null,
-                'HTTP_HOST' => isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null,
-            ];
-            $this->app->log(
-                'checkOrigin failed',
-                $params
-            );
-
-            return false;
-        }
-
-        return true;
-    }
     
     /**
      * @param string $routeName

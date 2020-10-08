@@ -37,9 +37,9 @@ Controller обязан быть задан чтобы запросы могли
 
 Класс `\Zer0\HTTP` (`$this->http`) имеет метод
 
-`public function buildUrl(string $routeName, $params = [], array $query = []): string`
+`public function url(string $routeName, $params = [], array $query = []): string`
 
-позволяющий построить URL, например так: `$this->http->buildUrl('getting_started', 'routes', ['foo' => 'bar']);`
+позволяющий построить URL, например так: `$this->http->url('getting_started', 'routes', ['foo' => 'bar']);`
 При конфигурации роута `getting_started` как в примере выше результатом будет `/getting-started/routes?foo=bar`
 
 Также можно пользоваться аналогичной функцией в Javascript — `Routes.url()`. При этом доступны только те роуты,

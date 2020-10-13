@@ -63,6 +63,7 @@ final class HTTP extends AbstractController
     public function buildRoutesjsAction(): void
     {
         $destfile = ZERO_ROOT . '/public/js/Routes.cfg.js';
+        mkdir(dirname($destfile), 0750, true);
 
         $routes = $this->app->broker('HTTP')->getConfig()->Routes;
         $generator = new JSGenerator($routes->toArray());

@@ -64,7 +64,7 @@ final class HTTP extends AbstractController
     {
         $destfile = ZERO_ROOT . '/public/js/Routes.cfg.js';
         if (!is_dir(dirname($destfile))) {
-            mkdir(dirname($destfile), ($this->app->config->HTTP->dir_mode ?? 0750), true);
+            mkdir(dirname($destfile), $this->app->config->HTTP->dir_mode ?? 0750, true);
         }
 
         $routes = $this->app->broker('HTTP')->getConfig()->Routes;

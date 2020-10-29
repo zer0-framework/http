@@ -56,7 +56,7 @@ final class HTTP extends AbstractController
         // Writing into the file
         file_put_contents($tmp = tempnam(dirname($destfile), 'cfg'), $body);
         rename($tmp, $destfile);
-        chmod($destfile, 0755);
+        chmod($destfile, 0644);
         $this->cli->successLine("Written to $destfile in " . $this->elapsedMill() . " ms.");
     }
 
@@ -74,7 +74,7 @@ final class HTTP extends AbstractController
         // Writing into the file
         file_put_contents($tmp = tempnam(dirname($destfile), 'cfg'), $cfg);
         rename($tmp, $destfile);
-        chmod($destfile, 0755);
+        chmod($destfile, 0644);
         $this->cli->successLine("Written to $destfile in " . $this->elapsedMill() . " ms.");
     }
 

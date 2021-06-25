@@ -56,6 +56,13 @@ class NginxGenerator extends Basic
                 $cfg .= "\tlimit_except " . implode(' ', $conf['methods']) ." {deny all;}\n";
             }
 
+            // Error pages
+            if (isset($conf['error_pages'])) {
+                foreach ($conf['error_pages'] as $code => $location) {
+                    $cfg .= "\terror_page {$code} $location;\n";
+                }
+            }
+
             // Includes
             foreach ($this->include as $file) {
                 $cfg .= "\tinclude " . $file . ";\n";
